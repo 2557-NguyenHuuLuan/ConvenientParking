@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gửi Tiền</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        /* CSS chung */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('/HomeImages/bg.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-top: 20px;
+        }
+
+        label {
+            font-size: 16px;
+            color: #333;
+            display: block;
+            margin: 10px 0;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            width: 80%;
+            max-width: 300px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 8px 15px;
+            font-size: 14px;
+            background-color: black;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #amount, button {
+            display: block;
+            margin: 10px auto;
+        }
+
+        button:hover {
+            background-color: black;
+        }
+
+        .content-wrapper {
+            max-width: 600px;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        img#qrCode {
+            margin-top: 20px;
+            max-width: 300px;
+            height: auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        footer {
+            background-color: white;
+            position: relative;
+            width: 100%;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+<th:block th:replace="~{home/layout::header}"></th:block>
+<div class="content-wrapper">
+    <h1>NẠP TIỀN VÀO VÍ</h1>
+    <label for="amount">NHẬP SỐ TIỀN:</label>
+    <input type="number" id="amount" required>
+    <button onclick="generateQRCode()">QR CODE</button>
+
+    <h2>Mã QR:</h2>
+    <img id="qrCode" src="" alt="QR Code sẽ hiển thị ở đây">
+</div>
+<th:block th:replace="~{home/layout::footer}"></th:block>
+<script>
+    let codeTransaction = ""; // Biến lưu trữ mã giao dịch
+
+    function generateQRCode() {
+        const amount = $('#amount').val();
+
+        if (!amount || amount <= 0) {
+            alert("Vui lòng nhập số tiền hợp lệ.");
+            return;
+        }
+
+        $.get(`/api/sepay/generate-qr?amount=${amount}`, function (response) {
+            codeTransaction = response.codeTransaction; // Lưu mã giao dịch từ phản hồi
+            const qrCodeUrl = response.qrCodeUrl; // Lấy URL mã QR từ phản hồi
+
+            $('#qrCode').attr('src', qrCodeUrl).show();
+            checkPayment(codeTransaction); // Gọi hàm kiểm tra thanh toán với mã giao dịch
+        });
+    }
+
+    function checkPayment(codeTransaction) {
+        const amount = $('#amount').val();
+        const startTime = Date.now(); // Thời gian bắt đầu
+        const checkInterval = setInterval(function () {
+            // Kiểm tra thời gian đã trôi qua
+            if (Date.now() - startTime > 60000) { // 60 giây
+                clearInterval(checkInterval);
+                window.location.href = '/failed'; // Chuyển đến trang lỗi
+                return;
+            }
+
+            $.get(`/api/sepay/check-payment/${codeTransaction}`, function (response) {
+                if (response === "YES") {
+                    depositIntoAccount(amount);
+                    clearInterval(checkInterval);
+                    window.location.href = '/success'; // Chuyển đến trang thành công
+                }
+            }).fail(function () {
+                // Nếu không tìm thấy thanh toán, tiếp tục kiểm tra
+            });
+        }, 4000); // Kiểm tra mỗi 4 giây
+    }
+
+    function depositIntoAccount(amount) {
+        $.get(`/api/sepay/deposit-into-account/${amount}`, function (response) {
+            console.log(response);
+        }).fail(function () {
+            console.error("Deposit failed");
+        });
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+</body>
+</html>

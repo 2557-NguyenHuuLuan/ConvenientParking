@@ -1,0 +1,82 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+.contract-page {
+    width: 210mm;
+    min-height: 297mm;
+    padding: 20mm;
+    margin: auto;
+    background-color: white;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    page-break-after: always;
+}
+
+.header {
+    text-align: center;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
+h1 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+hr {
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 18px;
+    margin: 20px 0 10px;
+}
+
+p {
+    margin-bottom: 10px;
+}
+
+.contract-content {
+    font-size: 14px;
+}
+
+.date-section {
+    margin: 40px 0;
+    text-align: right;
+    font-size: 14px;
+}
+
+.signature-section {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+}
+
+.signature {
+    text-align: center;
+    width: 45%;
+}
+
+.signature p {
+    margin-bottom: 80px;
+}
+
+@media print {
+    body, .contract-page {
+        background-color: white;
+        box-shadow: none;
+        margin: 0;
+        padding: 0;
+    }
+}

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách Hợp đồng</title>
+    <!-- Liên kết Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Cấu hình chung */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2.5rem;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: #333;
+            text-align: center;
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        /* Thiết kế Form */
+        .form-container form {
+            flex: 1 1 30%;
+            max-width: 300px;
+            margin: 10px;
+            padding: 20px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .form-container form:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Style cho các input */
+        .form-group label {
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .form-control {
+            border-radius: 5px;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+        }
+
+        .btn-primary {
+            background-color: #333;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #555;
+        }
+
+        /* Style bảng danh sách hợp đồng */
+        table {
+            width: 100%;
+            margin-top: 30px;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        thead {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        tbody {
+            text-align: center;
+        }
+
+        tbody tr:hover {
+            background-color: #f0f0f0;
+            transform: scale(1.02);
+            transition: all 0.3s ease-in-out;
+        }
+
+        tbody td, thead th {
+            padding: 12px;
+            border: 1px solid #ddd;
+        }
+
+        tbody td a {
+            color: #00c4ff;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        tbody td a:hover {
+            color: #333;
+        }
+
+        /* Nút quay lại ở góc trái */
+        .back-to-admin {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .back-to-admin:hover {
+            background-color: #555;
+            transform: scale(1.05);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .form-container form {
+                flex: 1 1 100%;
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Nút quay lại trang Admin -->
+<a href="/admin" class="back-to-admin">Quay lại trang Admin</a>
+
+<div class="container mt-5">
+    <h1>Thống kê Doanh thu</h1>
+
+    <div class="form-container">
+        <!-- Form thống kê theo ngày -->
+        <form th:action="@{/revenue/statistics-by-date}" method="get">
+            <h3>Thống kê theo Ngày</h3>
+            <div class="form-group">
+                <label for="startDate">Ngày bắt đầu:</label>
+                <input type="date" id="startDate" name="startDate" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="endDate">Ngày kết thúc:</label>
+                <input type="date" id="endDate" name="endDate" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Xem thống kê</button>
+        </form>
+
+        <!-- Form thống kê theo tháng -->
+        <form th:action="@{/revenue/statistics-by-month}" method="get">
+            <h3>Thống kê theo Tháng</h3>
+            <div class="form-group">
+                <label for="month">Tháng:</label>
+                <input type="number" id="month" name="month" class="form-control" min="1" max="12" required>
+            </div>
+            <div class="form-group">
+                <label for="year">Năm:</label>
+                <input type="number" id="year" name="year" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Xem thống kê</button>
+        </form>
+
+        <!-- Form thống kê theo năm -->
+        <form th:action="@{/revenue/statistics-by-year}" method="get">
+            <h3>Thống kê theo Năm</h3>
+            <div class="form-group">
+                <label for="yearOnly">Năm:</label>
+                <input type="number" id="yearOnly" name="year" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Xem thống kê</button>
+        </form>
+    </div>
+
+    <!-- Bảng danh sách hợp đồng -->
+    <h1>Danh sách Hợp đồng</h1>
+    <table class="table table-bordered mt-4">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Ngày viết</th>
+            <th>Thời gian hiệu lực</th>
+            <th>Giá trị</th>
+            <th>Người dùng</th>
+            <th>Chi tiết Hợp đồng</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="contract : ${contracts}">
+            <td th:text="${contract.id}"></td>
+            <td th:text="${#temporals.format(contract.writtenOn, 'dd/MM/yyyy')}"></td>
+            <td th:text="${contract.validity}"></td>
+            <td th:text="${contract.value}"></td>
+            <td th:text="${contract.user.username}"></td>
+            <td>
+                <a th:href="@{/revenue/contract/{contractId}(contractId=${contract.id})}" th:text="'Xem Chi tiết'"></a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Liên kết đến các thư viện JavaScript của Bootstrap 5 -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

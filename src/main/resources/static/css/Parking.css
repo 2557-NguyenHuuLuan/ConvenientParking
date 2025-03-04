@@ -1,0 +1,77 @@
+body {
+    background-color: rgb(175, 175, 175); /* Màu nền cho toàn bộ trang */
+}
+.scale-container {
+    transform: scale(0.9); /* Thu nhỏ bố cục xuống 80% */
+    transform-origin: top center; /* Thiết lập điểm xuất phát cho việc thu nhỏ */
+}
+.parkingpot {
+    position: relative; /* Đặt vị trí tương đối cho hình vuông */
+    width: 100px; /* Chiều rộng hình vuông */
+    height: 50px; /* Chiều cao hình vuông */
+    background-color: gray; /* Màu nền hình vuông */
+    border: 2px solid gold; /* Viền vàng */
+    margin: 0; /* Không có khoảng cách giữa các hình vuông */
+}
+.white-line-left {
+    position: absolute; /* Đặt vị trí tuyệt đối cho đường thẳng */
+    left: 5%; /* Đặt đường thẳng sát bên trái */
+    top: 10%;
+    width: 2px; /* Độ rộng đường thẳng */
+    height: 80%; /* Chiều cao đường thẳng */
+    background-color: white; /* Màu đường thẳng */
+}
+.white-line-right {
+    position: absolute; /* Đặt vị trí tuyệt đối cho đường thẳng */
+    right: 5%; /* Đặt đường thẳng sát bên phải */
+    top: 10%;
+    width: 2px; /* Độ rộng đường thẳng */
+    height: 80%; /* Chiều cao đường thẳng */
+    background-color: white; /* Màu đường thẳng */
+}
+.column-gap {
+    width: 200px; /* Chiều rộng khoảng cách giữa các cột */
+    background-color: rgb(150, 150, 150); /* Màu nền khoảng cách */
+    position: relative;
+}
+.divider {
+    position: absolute; /* Đặt vị trí tuyệt đối cho đường thẳng */
+    top: 0; /* Đặt đường thẳng ở đầu cột */
+    left: 50%; /* Đặt đường thẳng ở giữa cột */
+    width: 2px; /* Độ rộng đường thẳng */
+    height: 100%; /* Chiều cao đường thẳng */
+    background-color: gold; /* Màu đường thẳng */
+    border-left: 2px dashed gold; /* Đường thẳng dọc đứt nét */
+}
+.right .parkingpot {
+    border-right: none; /* Không có viền bên phải cho cột bên phải */
+}
+.left .parkingpot {
+    border-left: none; /* Không có viền bên trái cho cột bên trái */
+}
+/* Thêm lối vào và lối ra */
+.entry-exit {
+    width: 100%;
+    height: 100px;
+    background-color:rgb(150, 150, 150);
+    color: white;
+    text-align: center;
+    line-height: 60px;
+    font-weight: bold;
+}
+.btn-parkingspot{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border: none;
+    text-align: center;
+    color: white;
+    opacity: 0.7;
+    margin-top: 9px
+}
+.exit {
+    background-color: rgb(150, 150, 150);
+}

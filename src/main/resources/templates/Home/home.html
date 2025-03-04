@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang chủ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Banner */
+        .banner {
+            background: url(/HomeImages/baidauxe.jpg) center/cover no-repeat;
+            height: 70vh;
+            position: relative;
+        }
+        .banner .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .banner .content {
+            z-index: 1;
+            position: relative;
+            color: #fff;
+            text-align: center;
+        }
+
+        /* Tính năng nổi bật */
+        .feature-card {
+            transition: all 0.3s ease;
+            border: 1px solid #ddd;
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100%;
+            padding: 20px;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: #000;
+        }
+
+        .feature-card i {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        /* Bảng giá */
+        .pricing-card {
+            border: 1px solid #ddd;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .pricing-card:hover {
+            border-color: #000;
+        }
+        .pricing-card .price-display {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        /* Tiêu đề tính năng */
+        .container h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Điều chỉnh chiều cao cho các thẻ tính năng */
+        .feature-card {
+            min-height: 250px;
+        }
+    </style>
+</head>
+<body>
+<th:block th:replace="~{home/layout::header}"></th:block>
+
+<!-- Banner -->
+<div class="banner position-relative text-center text-white d-flex align-items-center justify-content-center">
+    <div class="overlay"></div>
+    <div class="content">
+        <h1 class="display-4 fw-bold">Tìm chỗ đậu xe nhanh chóng & an toàn</h1>
+        <p class="lead">Đặt trước chỗ đậu xe chỉ với vài cú nhấp chuột</p>
+        <a sec:authorize="!isAuthenticated()" href="/login" class="btn btn-dark btn-lg mt-3">Đặt chỗ ngay</a>
+        <a sec:authorize="isAuthenticated()" href="/rental/rental-forms" class="btn btn-dark btn-lg mt-3">Đặt chỗ ngay</a>
+    </div>
+</div>
+
+<!-- Tính năng nổi bật -->
+<div class="container py-5">
+    <h2 class="text-center mb-5">Các lý do bạn nên chọn LBParking</h2>
+    <div class="row text-center">
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="feature-card p-4 shadow-sm d-flex flex-column align-items-center">
+                <i class="bi bi-clock fs-1"></i>
+                <h5 class="mt-3">Đặt chỗ linh hoạt</h5>
+                <p>Tìm chỗ theo giờ và vị trí mong muốn.</p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="feature-card p-4 shadow-sm d-flex flex-column align-items-center">
+                <i class="bi bi-shield-lock fs-1"></i>
+                <h5 class="mt-3">Bãi đậu xe an toàn</h5>
+                <p>Camera giám sát 24/7.</p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="feature-card p-4 shadow-sm d-flex flex-column align-items-center">
+                <i class="bi bi-credit-card fs-1"></i>
+                <h5 class="mt-3">Thanh toán tiện lợi</h5>
+                <p>Hỗ trợ đa phương thức thanh toán.</p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-3 mb-4">
+            <div class="feature-card p-4 shadow-sm d-flex flex-column align-items-center">
+                <i class="bi bi-telephone-forward fs-1"></i>
+                <h5 class="mt-3">Hỗ trợ khách hàng</h5>
+                <p>Luôn có nhân viên hỗ trợ.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Bảng giá dịch vụ -->
+<div class="pricing-section bg-light py-5">
+    <div class="container text-center">
+        <h2 class="mb-5">Bảng giá dịch vụ</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="pricing-card p-4">
+                    <h4>Gói giờ</h4>
+                    <p class="price-display" th:text="${formHour}+ ' VND/giờ'"></p>
+                    <ul class="list-unstyled">
+                        <li>Nhanh chóng và tiện lợi</li>
+                        <li>Hỗ trợ nhanh</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="pricing-card p-4 border border-dark">
+                    <h4>Gói ngày</h4>
+                    <p class="price-display" th:text="${formDay}+ ' VND/ngày'"></p>
+                    <ul class="list-unstyled">
+                        <li>Chỗ đậu xe rộng rãi và thuận tiện cho công việc dài ngày</li>
+                        <li>Hỗ trợ lâu dài</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="pricing-card p-4">
+                    <h4>Gói tháng</h4>
+                    <p class="price-display" th:text="${formMonth}+ ' VND/tháng'"></p>
+                    <ul class="list-unstyled">
+                        <li>Chỗ đậu xe ưu tiên</li>
+                        <li>Hỗ trợ 24/7</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<th:block th:replace="~{home/layout::footer}"></th:block>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>
+</body>
+</html>

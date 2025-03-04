@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách Chỗ đỗ xe</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            font-weight: 600;
+        }
+        .btn {
+            border-radius: 25px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+        .btn-success {
+            background-color: #28a745;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+        }
+        .btn-warning:hover {
+            background-color: #e0a800;
+        }
+        .btn-info {
+            background-color: #17a2b8;
+        }
+        .btn-info:hover {
+            background-color: #138496;
+        }
+        table {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        th, td {
+            text-align: center;
+        }
+        .form-check-input:checked {
+            background-color: #000;
+            border-color: #000;
+        }
+        .form-check-label {
+            font-weight: bold;
+        }
+        .section-header {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        /* Nút quay lại */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 999;
+            background-color: #343a40;
+            color: white;
+            border-radius: 50%;
+            padding: 10px 15px;
+            font-size: 18px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+        .back-btn:hover {
+            background-color: #495057;
+        }
+    </style>
+</head>
+<body>
+<!-- Nút quay lại -->
+<a href="/admin" class="back-btn">&#8592; Quay lại</a>
+
+<div class="container mt-5">
+    <h1 class="text-center">Danh sách Chỗ đỗ xe</h1>
+
+    <div th:if="${errorMessage != null}">
+        <p class="text-danger" th:text="${errorMessage}"></p>
+    </div>
+
+    <div class="mb-4 text-center">
+        <a href="#" th:href="@{/spot/top-rented}" class="btn btn-success mx-2">Ô đậu nhiều lượt thuê nhất</a>
+        <a href="#" th:href="@{/spot/least-rented}" class="btn btn-warning mx-2">Ô đậu ít lượt thuê nhất</a>
+    </div>
+
+    <form th:action="@{/spot/search}" method="get" class="form-inline mb-4">
+        <input type="text" name="keyword" class="form-control me-2" placeholder="Nhập từ khóa tìm kiếm" th:value="${param.keyword}">
+        <button type="submit" class="btn btn-dark">Tìm kiếm</button>
+    </form>
+
+    <form th:action="@{/spot/list-spot}" method="get" class="mb-4">
+        <div class="form-check">
+            <input type="checkbox" id="rented" name="rented" class="form-check-input"
+                   th:value="true" th:checked="${param.rented != null}"
+                   onchange="this.form.submit();">
+            <label class="form-check-label" for="rented">Chỉ hiển thị chỗ đỗ đã thuê</label>
+        </div>
+    </form>
+
+    <!-- Thêm Ô đậu -->
+    <div class="section-header">Thêm Chỗ Đỗ Xe Mới</div>
+    <form th:action="@{/spot/add-parking-spot}" th:object="${parkingSpot}" method="post" class="mb-4">
+        <div class="mb-3">
+            <label for="zoneId" class="form-label">Chọn Khu vực Đỗ xe:</label>
+            <select id="zoneId" name="zoneId" class="form-select" required>
+                <option value="" disabled selected>Chọn một Khu vực</option>
+                <option th:each="zone : ${zones}" th:value="${zone.id}" th:text="${zone.name}"></option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="location" class="form-label">Vị trí:</label>
+            <input type="text" id="location" name="location" class="form-control" th:value="*{location}" required />
+        </div>
+
+        <button type="submit" class="btn btn-dark">Thêm Chỗ đỗ xe</button>
+    </form>
+
+    <table class="table table-bordered mt-4">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Vị trí</th>
+            <th>Khu vực</th>
+            <th>Doanh thu</th>
+            <th>Lượt thuê</th>
+            <th>Chi tiết hợp đồng</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="spot : ${spots}">
+            <td th:text="${spot.id}"></td>
+            <td th:text="${spot.location}"></td>
+            <td th:text="${spot.parkingZone.name}"></td>
+            <td th:text="${revenueMap[spot.id]}"></td>
+            <td th:text="${contractCounts[spot.id]}"></td>
+            <td>
+                <a th:href="@{/spot/details(spotId=${spot.id})}" class="btn btn-info">Xem chi tiết</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thống kê Doanh thu theo Ngày</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Nền sáng cho toàn bộ trang */
+        }
+
+        .card {
+            background-color: #fff; /* Màu nền trắng cho card */
+            border: 1px solid #dee2e6; /* Viền nhẹ cho card */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Hiệu ứng bóng đổ */
+            transition: all 0.3s ease; /* Hiệu ứng khi hover */
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Hiệu ứng hover tăng cường bóng đổ */
+            transform: translateY(-5px); /* Hiệu ứng đẩy card lên khi hover */
+        }
+
+        .card-header {
+            background-color: #343a40; /* Màu nền đen cho phần header */
+            color: white;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .table th, .table td {
+            vertical-align: middle;
+        }
+
+        .table-striped tbody tr:nth-child(odd) {
+            background-color: #f2f2f2; /* Đổi màu cho các dòng lẻ */
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #e9ecef; /* Hiệu ứng đổi màu khi hover qua một dòng trong bảng */
+        }
+
+        .btn-custom {
+            background-color: #343a40;
+            color: white;
+            border: none;
+        }
+
+        .btn-custom:hover {
+            background-color: #495057; /* Hiệu ứng hover cho button */
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <!-- Card for revenue stats -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header">
+            <h3 class="card-title">Thống kê Doanh thu theo Ngày</h3>
+        </div>
+        <div class="card-body">
+            <p><strong>Ngày bắt đầu:</strong> <span th:text="${#temporals.format(startDate, 'dd/MM/yyyy')}"></span></p>
+            <p><strong>Ngày kết thúc:</strong> <span th:text="${#temporals.format(endDate, 'dd/MM/yyyy')}"></span></p>
+            <h4 class="mt-4">Tổng doanh thu: <span th:text="${totalRevenue}"></span> VND</h4>
+        </div>
+    </div>
+
+    <!-- Table for contracts -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white">
+            <h5 class="card-title">Chi tiết hợp đồng</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Ngày viết</th>
+                    <th>Thời gian hiệu lực</th>
+                    <th>Giá trị</th>
+                    <th>Người dùng</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="contract : ${contracts}">
+                    <td th:text="${contract.id}"></td>
+                    <td th:text="${#temporals.format(contract.writtenOn, 'dd/MM/yyyy')}"></td>
+                    <td th:text="${contract.validity}"></td>
+                    <td th:text="${contract.value}"></td>
+                    <td th:text="${contract.user.username}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+
+</body>
+</html>

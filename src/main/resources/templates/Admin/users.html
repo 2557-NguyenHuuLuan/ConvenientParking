@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <title>Quản lý Người dùng</title>
+    <style>
+        /* Background và font */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #f0f0f0; /* Màu nền sáng */
+            color: #333; /* Màu chữ tối */
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            color: #333;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Style bảng */
+        table {
+            background: #fff;
+            border-collapse: collapse;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+
+        thead {
+            background: #333;
+            color: #fff;
+            font-size: 1.1rem;
+        }
+
+        tbody tr {
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(0, 255, 255, 0.1);
+            transform: scale(1.02);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border: none;
+        }
+
+        /* Nút khóa tài khoản */
+        .lock-icon {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        /* Nút khóa khi chưa khóa */
+        .lock-open {
+            fill: #00c4ff; /* Màu xanh dương cho ổ khóa mở */
+        }
+
+        /* Nút khóa khi đã khóa */
+        .lock-closed {
+            fill: #f00; /* Màu đỏ cho ổ khóa đóng */
+        }
+
+        .form-check-input {
+            accent-color: #00c4ff;
+            transition: transform 0.3s ease;
+        }
+
+        .form-check-input:checked {
+            transform: scale(1.3);
+        }
+
+        /* Nút quay lại */
+        .btn-secondary {
+            display: block;
+            margin: 20px auto;
+            padding: 12px 30px;
+            background: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            text-align: center;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #444;
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Quản lý Người dùng</h1>
+    <table class="table table-striped table-dark">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên người dùng</th>
+            <th>Email</th>
+            <th>Khóa tài khoản</th>
+            <th>Thêm Vai trò (Tích để thêm)</th>
+            <th>Xóa Vai trò (Tích để xóa)</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Lặp qua danh sách người dùng và hiển thị thông tin -->
+        <th:block th:each="user : ${users}">
+            <tr>
+                <td th:text="${user.id}"></td>
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.email}"></td>
+                <td>
+                    <form th:action="@{/admin/users/blockUser}" method="post">
+                        <input type="hidden" name="userId" th:value="${user.id}" />
+                        <!-- Hình ảnh ổ khóa mở và đóng -->
+                        <svg th:if="${user.isLocked}" class="lock-icon lock-closed" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 10V7c0-2.8-2.2-5-5-5-2.6 0-4.8 2-5 4.5V7h-1c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V12c0-1.1-.9-2-2-2h-1zm-5 2h-2v-2h2v2zm1-5c0 1.7-1.3 3-3 3s-3-1.3-3-3V7c0-1.7 1.3-3 3-3s3 1.3 3 3v2z"></path></svg>
+                        <svg th:if="${not user.isLocked}" class="lock-icon lock-open" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 10V7c0-2.8-2.2-5-5-5-2.6 0-4.8 2-5 4.5V7h-1c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V12c0-1.1-.9-2-2-2h-1zm-5 2h-2v-2h2v2zm1-5c0 1.7-1.3 3-3 3s-3-1.3-3-3V7c0-1.7 1.3-3 3-3s3 1.3 3 3v2z"></path></svg>
+                        <input type="checkbox" class="form-check-input" name="lockUser"
+                               th:checked="${user.isLocked}" onchange="this.form.submit();" />
+                    </form>
+                </td>
+                <td>
+                    <form th:action="@{/admin/updateRole/add}" method="post">
+                        <input type="hidden" name="userId" th:value="${user.id}" />
+                        <th:block th:each="role : ${roles}">
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="roles"
+                                       th:value="${role.id}"
+                                       th:checked="${user.roles.contains(role)}"
+                                       th:disabled="${user.roles.size() == 1 and user.roles.contains(role)}"
+                                       onchange="this.form.submit();" />
+                                <label class="form-check-label" th:text="${role.name}"></label>
+                            </div>
+                        </th:block>
+                    </form>
+                </td>
+                <td>
+                    <form th:action="@{/admin/updateRole/remove}" method="post">
+                        <input type="hidden" name="userId" th:value="${user.id}" />
+                        <th:block th:each="role : ${user.roles}">
+                            <div class="form-check">
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="roles"
+                                       th:value="${role.id}"
+                                       th:disabled="${user.roles.size() == 1 and user.roles.contains(role)}"
+                                       onchange="this.form.submit();" />
+                                <label class="form-check-label" th:text="${role.name}"></label>
+                            </div>
+                        </th:block>
+                    </form>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+    <a href="/admin" class="btn btn-secondary">Trở về trang quản trị</a>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

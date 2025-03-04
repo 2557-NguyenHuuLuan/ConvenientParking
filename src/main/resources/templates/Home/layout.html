@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <header th:fragment="header">
+        <header class="p-3 bg-white text-dark">
+            <div class="container">
+                <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                    <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+                        <img th:src="@{/Logo/LBPARKING.png}" alt="Logo" width="100" height="100">
+                    </a>
+                    <ul class="nav col-12 col-lg-auto ms-auto mb-2 justify-content-center mb-md-0">
+                        <li><a href="/" class="nav-link px-2 text-dark me-4">Trang chủ</a></li>
+                        <li><a href="/intro" class="nav-link px-2 text-dark me-4">Giới thiệu</a></li>
+                        <li sec:authorize="hasAnyAuthority('ADMIN','USER')"><a href="/vehicles/add" class="nav-link px-2 text-dark me-4">Đăng Ký xe</a></li>
+                        <li sec:authorize="hasAnyAuthority('ADMIN','USER')">
+                            <a th:if="${user.get().isVerified}" href="/rental/rental-forms" class="nav-link px-2 text-dark me-4">Thuê ô đỗ</a>
+                            <span th:if="${!user.get().isVerified}" style="color: red; cursor: not-allowed;">Thuê ô đỗ</span>
+                        </li>
+                        <li sec:authorize="hasAnyAuthority('ADMIN','USER')"><a href="/my-contracts" class="nav-link px-2 text-dark me-4">Hợp đồng</a></li>
+                        <li sec:authorize="hasAnyAuthority('ADMIN', 'EMPLOYEE')"><a class="nav-link px-2 text-dark me-4" href="/admin">Admin</a></li>
+                    </ul>
+
+                    <div sec:authorize="!isAuthenticated()" class="text-end">
+                        <a th:href="@{/login}" class="btn btn-outline-dark me-2" role="button">Đăng nhập</a>
+                        <a th:href="@{/register}" class="btn btn-dark" role="button">Đăng ký</a>
+                    </div>
+                    <div sec:authorize="isAuthenticated()" class="dropdown text-end ms-3">
+                        <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                            <img src="https://www.pngitem.com/pimgs/m/421-4213053_default-avatar-icon-hd-png-download.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                        </a>
+                        <ul class="dropdown-menu text-small">
+                            <li><a class="dropdown-item" href="/my-account">Tài khoản của tôi</a></li>
+                            <li><a class="dropdown-item" href="/vehicles/my-vehicles">Danh sách xe</a></li>
+                            <li><a class="dropdown-item" href="/my-contracts">Danh sách hợp đồng</a></li>
+                            <li th:if="${user.isPresent() && !user.get().isVerified}">
+                                <a class="dropdown-item" href="#" onclick="document.getElementById('verifyForm').submit(); return false;">Xác minh tài khoản</a>
+                                <form id="verifyForm" th:action="@{/mail/verify}" method="post" style="display:none;"></form>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="#" onclick="document.getElementById('logoutForm').submit(); return false;">Đăng xuất</a>
+                                <form id="logoutForm" th:action="@{/logout}" method="post" style="display:none;"></form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </header>
+    <div th:fragment="banner">Banner</div>
+    <div th:fragment="content">Content</div>
+    <footer th:fragment="footer">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
+                <div class="col mb-3">
+                    <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
+                        <img th:src="@{/Logo/LBPARKINGWHITE.png}" alt="Logo" width="150" height="150">
+                    </a>
+                    <p class="text-body-secondary">LBParking © Hutech 2024</p>
+                </div>
+                <div class="col mb-3">
+                    <h5>Liên hệ</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
+                    </ul>
+                </div>
+
+                <div class="col mb-3">
+                    <h5>Mạng xã hội</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Facebook</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Instagram</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">X</a></li>
+                    </ul>
+                </div>
+
+                <div class="col mb-3">
+                    <h5>Website</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Home</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Features</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Pricing</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">FAQs</a></li>
+                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">About</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+</body>
+</html>

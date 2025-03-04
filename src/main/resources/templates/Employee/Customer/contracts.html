@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách Hợp đồng</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Arial', sans-serif;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #343a40;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        table {
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        th {
+            background-color: #343a40;
+            color: white;
+        }
+        td, th {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .btn {
+            border-radius: 25px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+        }
+        .btn-info {
+            background-color: #17a2b8;
+        }
+        .btn-info:hover {
+            background-color: #138496;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container mt-5">
+    <h1>Danh sách Hợp đồng</h1>
+    <table class="table table-bordered mt-4">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Ngày viết</th>
+            <th>Thời gian hiệu lực</th>
+            <th>Giá trị</th>
+            <th>Người dùng</th>
+            <th>Chi tiết Hợp đồng</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="contract : ${contracts}">
+            <tr>
+                <td th:text="${contract.id}"></td>
+                <td th:text="${#temporals.format(contract.writtenOn, 'dd/MM/yyyy')}"></td>
+                <td th:text="${contract.validity}"></td>
+                <td th:text="${contract.value}"></td>
+                <td th:text="${contract.user.username}"></td>
+                <td>
+                    <a th:href="@{/revenue/contract/{contractId}(contractId=${contract.id})}" class="btn btn-info">Xem Chi tiết</a>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

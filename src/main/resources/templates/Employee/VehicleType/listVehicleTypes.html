@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh Sách Loại Xe</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #212529;
+        }
+
+        .btn-primary {
+            background-color: #333;
+            border-color: #333;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #555;
+            border-color: #555;
+            transform: scale(1.05);
+        }
+
+        .table {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th,
+        .table td {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .table th {
+            background-color: #333;
+            color: white;
+        }
+
+        .table td {
+            color: #555;
+        }
+
+        .table tr:hover {
+            background-color: #f1f1f1;
+            transform: scale(1.02);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .btn-warning {
+            background-color: #ffc107;
+            border-color: #ffc107;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .btn-warning:hover {
+            background-color: #e0a800;
+            border-color: #e0a800;
+            transform: scale(1.05);
+        }
+
+        .btn {
+            transition: transform 0.3s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="container my-5">
+    <h1 class="text-center mb-4">Danh Sách Loại Xe</h1>
+    <a href="/admin/vehicle-types/add" class="btn btn-primary mb-3">Thêm Loại Xe</a>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Tên Loại Xe</th>
+            <th>Hệ Số</th>
+            <th>Hành Động</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="vehicleType : ${vehicleTypes}">
+            <tr>
+                <td th:text="${vehicleType.id}"></td>
+                <td th:text="${vehicleType.typeName}"></td>
+                <td th:text="${vehicleType.coefficient}"></td>
+                <td>
+                    <a th:href="@{'/admin/vehicle-types/edit/' + ${vehicleType.id}}" class="btn btn-warning">Sửa</a>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

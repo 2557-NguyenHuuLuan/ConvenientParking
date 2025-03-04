@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Chi Tiết Hợp Đồng</title>
+    <link rel="stylesheet" href="/css/contractDetail.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<th:block th:replace="~{home/layout::header}"></th:block>
+<div class="contract-page">
+    <h3 class="header">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</h3>
+    <h3 class="header">Độc lập - Tự do - Hạnh phúc</h3>
+
+    <div class="date-section">
+        <p>Ngày Lập: <span th:text="${contract.writtenOn}"></span></p>
+    </div>
+
+    <h1>HỢP ĐỒNG THUÊ Ô ĐẬU XE</h1>
+
+    <div class="contract-content">
+        <h2>1. Thông Tin Các Bên</h2>
+        <h3>Bên cho thuê:</h3>
+        <p><strong>Bên cho thuê:</strong> LBParking</p>
+        <p><strong>Địa chỉ:</strong> Số 123, Đường ABC, Quận 1, TP. Hồ Chí Minh</p>
+        <p><strong>Email:</strong> abc@example.com</p>
+        <p><strong>Số điện thoại:</strong> 0947 626 009</p>
+        <h3>Bên thuê:</h3>
+        <strong>Ông/Bà:</strong> <span th:text="${user.get().username}"></span><br>
+        <strong>Địa chỉ:</strong> <span th:text="${user.get().address}"></span><br>
+        <strong>Email:</strong> <span th:text="${user.get().email}"></span><br>
+        <strong>Số điện thoại:</strong> <span th:text="${user.get().phone}"></span>
+
+        <h2>2. Thông Tin Các gói đã thuê</h2>
+
+        <table style="border-collapse: collapse; width: 100%;">
+            <thead>
+            <tr>
+                <th style="border: 1px solid black; padding: 8px;">Ô</th>
+                <th style="border: 1px solid black; padding: 8px;">Hình thức</th>
+                <th style="border: 1px solid black; padding: 8px;">Gói thuê</th>
+                <th style="border: 1px solid black; padding: 8px;">Ngày bắt đầu</th>
+                <th style="border: 1px solid black; padding: 8px;">Giờ bắt đầu</th>
+                <th style="border: 1px solid black; padding: 8px;">Ngày kết thúc</th>
+                <th style="border: 1px solid black; padding: 8px;">Giờ kết thúc</th>
+                <th style="border: 1px solid black; padding: 8px;">Biển số xe đỗ</th>
+                <th style="border: 1px solid black; padding: 8px;">Giá trị gói</th>
+            </tr>
+            </thead>
+            <tbody th:each="detail : ${contractDetails}">
+            <tr>
+                <td style="border: 1px solid black; padding: 8px; white-space: nowrap;"><span th:text="${detail.parkingSpot.location}"></span></td>
+                <td style="border: 1px solid black; padding: 8px; white-space: nowrap;">
+                    <span th:if="${detail.rentalPackage.rentalForm.form == 'HOUR'}">Thuê theo giờ</span>
+                    <span th:if="${detail.rentalPackage.rentalForm.form == 'DAY'}">Thuê theo ngày</span>
+                    <span th:if="${detail.rentalPackage.rentalForm.form == 'MONTH'}">Thuê theo tháng</span>
+                    <span th:if="${detail.rentalPackage.rentalForm.form == 'YEAR'}">Thuê theo năm</span>
+                </td>
+                <td style="border: 1px solid black; padding: 8px;">
+                    <span th:text="${detail.rentalPackage.numberOf}"></span>
+                    <span th:if="${detail.rentalPackage.rentalForm.form == 'HOUR'}"> giờ</span>
+                    <span th:if="${detail.rentalPackage.rentalForm.form == 'DAY'}"> ngày</span>
+                    <span th:if="${detail.rentalPackage.rentalForm.form == 'MONTH'}"> tháng</span>
+                    <span th:if="${detail.rentalPackage.rentalForm.form == 'YEAR'}"> năm</span>
+                </td>
+                <td style="border: 1px solid black; padding: 8px; white-space: nowrap;"><span th:text="${detail.rentalStart}"></span></td>
+                <td style="border: 1px solid black; padding: 8px;"><span th:text="${detail.rentalStartTime}"></span></td>
+                <td style="border: 1px solid black; padding: 8px; white-space: nowrap;"><span th:text="${detail.rentalEnd}"></span></td>
+                <td style="border: 1px solid black; padding: 8px;"><span th:text="${detail.rentalEndTime}"></span></td>
+                <td style="border: 1px solid black; padding: 8px;"><span th:text="${detail.vehicle.numberPlate}"></span></td>
+                <td style="border: 1px solid black; padding: 8px;"><span th:text="${detail.price}"></span></td>
+            </tr>
+            </tbody>
+        </table>
+
+
+
+        <h2>4. Giá Thuê Và Phương Thức Thanh Toán</h2>
+        <p><strong>Tổng Giá trị hợp đồng:</strong><span th:text="${contract.value}"></span></p>
+
+        <h2>5. Quyền Và Nghĩa Vụ Của Các Bên</h2>
+
+        <h3>1. Quyền và Nghĩa Vụ Của Bên Cho Thuê</h3>
+
+        <strong>Quyền của Bên Cho Thuê:</strong>
+        <ul>
+            <li>Được nhận tiền thuê theo thỏa thuận trong hợp đồng vào thời gian và hình thức đã được ghi rõ.</li>
+            <li>Được kiểm tra tình trạng và việc sử dụng tài sản thuê theo định kỳ hoặc theo yêu cầu hợp lý.</li>
+            <li>Có quyền yêu cầu bên thuê thực hiện nghĩa vụ bảo quản tài sản thuê trong tình trạng tốt và không làm hư hại tài sản.</li>
+            <li>Có quyền chấm dứt hợp đồng và yêu cầu bên thuê trả lại tài sản thuê nếu bên thuê vi phạm nghĩa vụ trong hợp đồng.</li>
+        </ul>
+
+        <strong>Nghĩa Vụ của Bên Cho Thuê:</strong>
+        <ul>
+            <li>Cung cấp tài sản thuê đúng thời gian và địa điểm theo thỏa thuận trong hợp đồng.</li>
+            <li>Đảm bảo tài sản thuê trong tình trạng sử dụng được và không có khuyết tật.</li>
+            <li>Cung cấp các giấy tờ liên quan đến tài sản thuê khi cần thiết.</li>
+            <li>Hỗ trợ bên thuê trong việc sử dụng tài sản, nếu có yêu cầu hợp lý.</li>
+        </ul>
+
+        <h3>2. Quyền và Nghĩa Vụ Của Bên Thuê</h3>
+
+        <strong>Quyền của Bên Thuê:</strong>
+        <ul>
+            <li>Được sử dụng tài sản thuê theo thỏa thuận trong hợp đồng mà không bị can thiệp.</li>
+            <li>Được yêu cầu bên cho thuê sửa chữa hoặc khắc phục các sự cố liên quan đến tài sản thuê mà không phải do lỗi của bên thuê.</li>
+            <li>Được yêu cầu bên cho thuê cung cấp thông tin và tài liệu liên quan đến tài sản thuê.</li>
+            <li>Có quyền chấm dứt hợp đồng trước thời hạn nếu bên cho thuê không thực hiện nghĩa vụ theo hợp đồng.</li>
+        </ul>
+
+        <strong>Nghĩa Vụ của Bên Thuê:</strong>
+        <ul>
+            <li>Thanh toán tiền thuê đầy đủ và đúng hạn theo thỏa thuận trong hợp đồng.</li>
+            <li>Bảo quản tài sản thuê trong tình trạng tốt, không làm hư hại tài sản và tuân thủ các quy định về sử dụng tài sản.</li>
+            <li>Thông báo ngay cho bên cho thuê về bất kỳ hư hỏng hoặc sự cố nào liên quan đến tài sản thuê.</li>
+            <li>Trả lại tài sản thuê trong tình trạng như lúc nhận, trừ hao mòn hợp lý do sử dụng.</li>
+        </ul>
+
+
+    </div>
+
+
+    <div class="signature-section">
+        <div class="signature">
+            <p>Bên cho thuê</p>
+            <p>(Ký, ghi rõ họ tên)</p>
+        </div>
+        <div class="signature">
+            <p>Bên thuê</p>
+            <p>(Ký, ghi rõ họ tên)</p>
+        </div>
+    </div>
+    <a href="/my-contracts" class="btn btn-secondary mb-3">Quay Lại</a>
+
+    <div class="contract-actions">
+        <div th:if="${!contract.paymentStatus}">
+            <div class="d-flex gap-3 mb-3">
+                <form th:action="@{/rental/add-more-package}" method="post">
+                    <input type="hidden" id="contractId" name="contractId" th:value="${contract.id}">
+                    <button type="submit" class="btn btn-success">+ Thêm gói vào hợp đồng</button>
+                </form>
+                <form th:action="@{/my-contracts/show-payment}" method="get">
+                    <input type="hidden" name="contractId" th:value="${contract.id}">
+                    <button type="submit" class="btn btn-primary">Thanh Toán</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="alert alert-success text-center" th:if="${contract.paymentStatus}">
+            Hợp đồng đã được thanh toán.
+        </div>
+        <div class="alert alert-warning text-center" th:if="${!contract.paymentStatus}">
+            Hợp đồng chưa được thanh toán.
+        </div>
+    </div>
+
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<th:block th:replace="~{home/layout::footer}"></th:block>
+</body>
+</html>

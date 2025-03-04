@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh Toán Thành Công</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+            padding-top: 15%;
+            overflow: hidden;
+        }
+        h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.5);
+            animation: slideInTop 1.5s ease-in-out;
+        }
+        p {
+            font-size: 1.7rem;
+            margin-bottom: 30px;
+            animation: slideInBottom 1.5s ease-in-out;
+        }
+        a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+            border: 2px solid #fff;
+            padding: 12px 25px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            animation: pulseGlow 2s infinite;
+        }
+        a:hover {
+            background-color: #fff;
+            color: #000;
+        }
+        @keyframes slideInTop {
+            0% { opacity: 0; transform: translateY(-50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideInBottom {
+            0% { opacity: 0; transform: translateY(50px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.7); }
+            100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+        }
+    </style>
+</head>
+<body>
+<h1>Thanh Toán Thành Công!</h1>
+<p>Cảm ơn bạn đã gửi tiền.</p>
+<a href="/">Quay lại trang chính</a>
+</body>
+</html>

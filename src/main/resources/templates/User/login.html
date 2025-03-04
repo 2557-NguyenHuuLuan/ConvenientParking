@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sign in</title>
+    <link rel="stylesheet" href="/css/styleLogin.css">
+</head>
+
+<body>
+<div class="container">
+    <div class="poster">
+        <img src="/HomeImages/LBParking.jpg" alt="Poster Image">
+    </div>
+    <div class="box">
+        <!-- Thông báo lỗi -->
+        <div th:if="${param.error}" role="alert" id="errorLogin" class="error-message">
+            <span th:text="${param.error}"></span>
+        </div>
+        <form th:action="@{/login}" method="post">
+            <h2>Đăng nhập</h2>
+            <div class="inputBox">
+                <input type="text" id="username" name="username" required="required" th:value="${param.username}">
+                <span>Tên đăng nhập</span>
+                <i></i>
+            </div>
+            <div class="inputBox">
+                <input type="password" id="password" name="password" required="required">
+                <span>Mật khẩu</span>
+                <i></i>
+            </div>
+            <div class="links">
+                <a href="/password/forgot-password">Quên mật khẩu?</a>
+                <a th:href="@{/register}">Đăng ký</a>
+            </div>
+            <input type="submit" value="Đăng nhập">
+        </form>
+    </div>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+/* Reset some basic styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff; /* White background */
+    color: #000; /* Black text */
+    padding: 20px;
+}
+
+/* Header Styling */
+h1 {
+    color: #000;
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+/* Form Styling */
+form {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff; /* White background */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Light shadow */
+    border-radius: 8px;
+}
+
+/* Form elements */
+label {
+    color: #000;
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    display: block;
+}
+
+input[type="date"],
+input[type="time"],
+select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: #f4f4f4; /* Light gray background for inputs */
+    color: #000; /* Black text */
+    border: 1px solid #ddd; /* Light border */
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+input[type="date"]:focus,
+input[type="time"]:focus,
+select:focus {
+    border-color: #000; /* Black border on focus */
+    outline: none;
+}
+
+/* Button styles */
+button {
+    background-color: #000; /* Black button */
+    color: white;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #333; /* Darker black on hover */
+}
+
+/* Link Styling */
+a {
+    color: #000;
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+a:hover {
+    color: #007bff; /* Blue color on hover */
+    text-decoration: underline;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+    form {
+        padding: 15px;
+    }
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Animated Signup Form</title>
+    <link rel="stylesheet" href="/css/styleRegister.css">
+</head>
+
+<body>
+<div class="container">
+    <div class="poster">
+        <img src="/HomeImages/LBParking.jpg" alt="Poster Image">
+    </div>
+    <div class="box">
+        <form th:action="@{/register}" th:object="${user}" method="post">
+            <h2>Đăng ký tài khoản</h2>
+
+            <!-- Tên người dùng -->
+            <div class="inputBox">
+                <input type="text" id="username" th:field="*{username}" required="required">
+                <span>Tên người dùng</span>
+                <i></i>
+            </div>
+            <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</span>
+
+            <!-- Mật khẩu -->
+            <div class="inputBox">
+                <input type="password" id="password" th:field="*{password}" required="required">
+                <span>Mật khẩu</span>
+                <i></i>
+            </div>
+
+            <!-- Email -->
+            <div class="inputBox">
+                <input type="email" id="email" th:field="*{email}" required="required">
+                <span>Email</span>
+                <i></i>
+            </div>
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</span>
+
+            <!-- Số điện thoại -->
+            <div class="inputBox">
+                <input type="tel" id="phone" th:field="*{phone}" required="required">
+                <span>Số điện thoại</span>
+                <i></i>
+            </div>
+            <span th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Phone Error</span>
+
+            <!-- Địa chỉ -->
+            <div class="inputBox">
+                <input type="text" id="address" th:field="*{address}" required="required">
+                <span>Địa chỉ</span>
+                <i></i>
+            </div>
+            <div class="links">
+                <a th:href="@{/login}" style="margin-right: 250px"><---</a>
+            </div>
+            <span th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Address Error</span>
+
+            <input type="submit" value="Đăng ký">
+        </form>
+    </div>
+</div>
+</body>
+
+</html>
